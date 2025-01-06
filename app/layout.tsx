@@ -1,5 +1,7 @@
 import { Inter } from 'next/font/google';
 import './globals.css';
+import { ThemeProvider } from 'next-themes';
+import { ThemeSwitcher } from '@/components/theme-switcher';
 
 const inter = Inter({ subsets: ['latin'] });
 
@@ -22,8 +24,19 @@ export default function RootLayout({
   children: React.ReactNode;
 }) {
   return (
-    <html lang='en'>
-      <body className={inter.className}>{children}</body>
+    <html lang='en' suppressHydrationWarning>
+      <body className={inter.className}>
+        <ThemeProvider attribute='class' defaultTheme='system' enableSystem>
+          <header className='fixed w-full top-0 z-50 border-b bg-background/80 backdrop-blur-sm'>
+            <div className='container flex h-14 items-center justify-between'>
+              <nav className='flex items-center gap-6 text-sm'>
+                <ThemeSwitcher />
+              </nav>
+            </div>
+          </header>
+          <div className='pt-14'>{children}</div>
+        </ThemeProvider>
+      </body>
     </html>
   );
 }
