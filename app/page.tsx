@@ -3,12 +3,10 @@ import Link from 'next/link';
 
 export default async function Home() {
   return (
-    <div className='min-h-screen'>
+    <div className='min-h-screen bg-background'>
       {/* Hero Section */}
       <section className='py-20 px-4 text-center'>
-        <h1 className='text-6xl font-bold mb-6 bg-gradient-to-r from-primary via-secondary to-accent bg-clip-text text-transparent'>
-          TypeTidy
-        </h1>
+        <h1 className='text-6xl font-bold mb-6 text-primary'>TypeTidy</h1>
         <p className='text-2xl text-muted-foreground mb-8 max-w-2xl mx-auto'>
           Your intelligent writing companion for clear, error-free, and
           impactful communication
@@ -24,9 +22,9 @@ export default async function Home() {
       </section>
 
       {/* Features Section */}
-      <section className='py-16 px-4 bg-secondary'>
+      <section className='py-16 px-4 bg-muted'>
         <div className='max-w-6xl mx-auto'>
-          <h2 className='text-3xl font-bold text-center mb-12 text-secondary-foreground'>
+          <h2 className='text-3xl font-bold text-center mb-12 text-foreground'>
             Why Choose TypeTidy?
           </h2>
           <div className='grid md:grid-cols-3 gap-8'>
@@ -50,7 +48,7 @@ export default async function Home() {
       </section>
 
       {/* CTA Section */}
-      <section className='py-20 px-4 text-center'>
+      <section className='py-20 px-4 text-center bg-background'>
         <h2 className='text-3xl font-bold mb-6 text-foreground'>
           Ready to Transform Your Writing?
         </h2>
