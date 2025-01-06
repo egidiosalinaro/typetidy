@@ -2,6 +2,8 @@ import { Plus_Jakarta_Sans } from 'next/font/google';
 import './globals.css';
 import { ThemeProvider } from 'next-themes';
 import { ThemeSwitcher } from '@/components/theme-switcher';
+import Image from 'next/image';
+import Link from 'next/link';
 
 const jakarta = Plus_Jakarta_Sans({
   subsets: ['latin'],
@@ -34,7 +36,21 @@ export default function RootLayout({
         <ThemeProvider attribute='class' defaultTheme='system' enableSystem>
           <header className='fixed w-full top-0 z-50 border-muted bg-background/80 backdrop-blur-sm'>
             <div className='container flex h-14 items-center justify-between'>
-              <nav className='flex items-center gap-6 text-sm'>
+              <div className='flex items-center gap-2'>
+                <Link href='/' className='flex items-center gap-2'>
+                  <Image
+                    src='/globals/logo.svg'
+                    alt='TypeTidy Logo'
+                    width={32}
+                    height={32}
+                    className='dark:invert'
+                  />
+                  <span className='font-semibold text-lg text-foreground'>
+                    TypeTidy
+                  </span>
+                </Link>
+              </div>
+              <nav className='flex items-center gap-6'>
                 <ThemeSwitcher />
               </nav>
             </div>
