@@ -32,7 +32,7 @@ export default function RootLayout({
     <html lang='en' suppressHydrationWarning>
       <body className={`${jakarta.variable} font-sans`}>
         <ThemeProvider attribute='class' defaultTheme='system' enableSystem>
-          <header className='fixed w-full top-0 z-50 border-b bg-background/80 backdrop-blur-sm'>
+          <header className='fixed w-full top-0 z-50 border-muted bg-background/80 backdrop-blur-sm'>
             <div className='container flex h-14 items-center justify-between'>
               <nav className='flex items-center gap-6 text-sm'>
                 <ThemeSwitcher />
