@@ -9,15 +9,13 @@ export default async function Home() {
         <h1 className='text-6xl font-bold mb-6 bg-gradient-to-r from-primary via-secondary to-accent bg-clip-text text-transparent'>
           TypeTidy
         </h1>
-        <p className='text-2xl text-gray-600 dark:text-gray-300 mb-8 max-w-2xl mx-auto'>
+        <p className='text-2xl text-muted-foreground mb-8 max-w-2xl mx-auto'>
           Your intelligent writing companion for clear, error-free, and
           impactful communication
         </p>
         <div className='flex gap-4 justify-center'>
           <Link href='/sign-up'>
-            <Button size='lg' className='bg-primary hover:bg-primary/90'>
-              Get Started Free
-            </Button>
+            <Button size='lg'>Get Started Free</Button>
           </Link>
           <Button size='lg' variant='outline'>
             See How It Works
@@ -26,9 +24,9 @@ export default async function Home() {
       </section>
 
       {/* Features Section */}
-      <section className='py-16 px-4 bg-muted'>
+      <section className='py-16 px-4 bg-secondary'>
         <div className='max-w-6xl mx-auto'>
-          <h2 className='text-3xl font-bold text-center mb-12'>
+          <h2 className='text-3xl font-bold text-center mb-12 text-secondary-foreground'>
             Why Choose TypeTidy?
           </h2>
           <div className='grid md:grid-cols-3 gap-8'>
@@ -53,16 +51,14 @@ export default async function Home() {
 
       {/* CTA Section */}
       <section className='py-20 px-4 text-center'>
-        <h2 className='text-3xl font-bold mb-6'>
+        <h2 className='text-3xl font-bold mb-6 text-foreground'>
           Ready to Transform Your Writing?
         </h2>
-        <p className='text-xl text-gray-600 dark:text-gray-300 mb-8 max-w-2xl mx-auto'>
+        <p className='text-xl text-muted-foreground mb-8 max-w-2xl mx-auto'>
           Join thousands of writers who trust TypeTidy to perfect their content
         </p>
         <Link href='/sign-up'>
-          <Button size='lg' className='bg-primary hover:bg-primary/90'>
-            Start Writing Better Today
-          </Button>
+          <Button size='lg'>Start Writing Better Today</Button>
         </Link>
       </section>
     </div>
@@ -81,7 +77,7 @@ function FeatureCard({
   return (
     <div className='p-6 rounded-lg bg-card border shadow-sm hover:shadow-md transition-shadow'>
       <div className='text-4xl mb-4'>{icon}</div>
-      <h3 className='text-xl font-semibold mb-2 text-secondary'>{title}</h3>
+      <h3 className='text-xl font-semibold mb-2 text-foreground'>{title}</h3>
       <p className='text-muted-foreground'>{description}</p>
     </div>
   );
