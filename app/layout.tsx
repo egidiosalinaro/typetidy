@@ -39,11 +39,10 @@ export default function RootLayout({
               <div className='flex items-center gap-2'>
                 <Link href='/' className='flex items-center gap-2'>
                   <Image
-                    src='/globals/logo.svg'
+                    src='/logo.svg'
                     alt='TypeTidy Logo'
                     width={32}
                     height={32}
-                    className='dark:invert'
                   />
                   <span className='font-semibold text-lg text-foreground'>
                     TypeTidy
