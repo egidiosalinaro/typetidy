@@ -6,7 +6,7 @@ export default async function Home() {
     <div className='min-h-screen'>
       {/* Hero Section */}
       <section className='py-20 px-4 text-center'>
-        <h1 className='text-6xl font-bold mb-6 bg-gradient-to-r from-purple-600 to-blue-600 bg-clip-text text-transparent'>
+        <h1 className='text-6xl font-bold mb-6 bg-gradient-to-r from-primary via-secondary to-accent bg-clip-text text-transparent'>
           TypeTidy
         </h1>
         <p className='text-2xl text-gray-600 dark:text-gray-300 mb-8 max-w-2xl mx-auto'>
@@ -15,7 +15,7 @@ export default async function Home() {
         </p>
         <div className='flex gap-4 justify-center'>
           <Link href='/sign-up'>
-            <Button size='lg' className='bg-purple-600 hover:bg-purple-700'>
+            <Button size='lg' className='bg-primary hover:bg-primary/90'>
               Get Started Free
             </Button>
           </Link>
@@ -26,7 +26,7 @@ export default async function Home() {
       </section>
 
       {/* Features Section */}
-      <section className='py-16 px-4 bg-gray-50 dark:bg-gray-900'>
+      <section className='py-16 px-4 bg-muted'>
         <div className='max-w-6xl mx-auto'>
           <h2 className='text-3xl font-bold text-center mb-12'>
             Why Choose TypeTidy?
@@ -60,7 +60,7 @@ export default async function Home() {
           Join thousands of writers who trust TypeTidy to perfect their content
         </p>
         <Link href='/sign-up'>
-          <Button size='lg' className='bg-purple-600 hover:bg-purple-700'>
+          <Button size='lg' className='bg-primary hover:bg-primary/90'>
             Start Writing Better Today
           </Button>
         </Link>
@@ -79,10 +79,10 @@ function FeatureCard({
   icon: string;
 }) {
   return (
-    <div className='p-6 rounded-lg bg-white dark:bg-gray-800 shadow-sm'>
+    <div className='p-6 rounded-lg bg-card border shadow-sm hover:shadow-md transition-shadow'>
       <div className='text-4xl mb-4'>{icon}</div>
-      <h3 className='text-xl font-semibold mb-2'>{title}</h3>
-      <p className='text-gray-600 dark:text-gray-300'>{description}</p>
+      <h3 className='text-xl font-semibold mb-2 text-secondary'>{title}</h3>
+      <p className='text-muted-foreground'>{description}</p>
     </div>
   );
 }
