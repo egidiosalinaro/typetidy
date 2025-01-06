@@ -22,9 +22,9 @@ export default async function Home() {
       </section>
 
       {/* Features Section */}
-      <section className='py-16 px-4 bg-muted'>
+      <section className='py-16 px-4 bg-accent'>
         <div className='max-w-6xl mx-auto'>
-          <h2 className='text-3xl font-bold text-center mb-12 text-foreground'>
+          <h2 className='text-3xl font-bold text-center mb-12 text-accent-foreground'>
             Why Choose TypeTidy?
           </h2>
           <div className='grid md:grid-cols-3 gap-8'>
