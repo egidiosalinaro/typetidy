@@ -1,9 +1,14 @@
-import { Inter } from 'next/font/google';
+import { Plus_Jakarta_Sans } from 'next/font/google';
 import './globals.css';
 import { ThemeProvider } from 'next-themes';
 import { ThemeSwitcher } from '@/components/theme-switcher';
 
-const inter = Inter({ subsets: ['latin'] });
+const jakarta = Plus_Jakarta_Sans({
+  subsets: ['latin'],
+  // Include all the weights we need
+  weight: ['400', '500', '600', '700'],
+  variable: '--font-jakarta',
+});
 
 export const metadata = {
   title: 'TypeTidy - Your Intelligent Writing Assistant',
@@ -25,7 +30,7 @@ export default function RootLayout({
 }) {
   return (
     <html lang='en' suppressHydrationWarning>
-      <body className={inter.className}>
+      <body className={`${jakarta.variable} font-sans`}>
         <ThemeProvider attribute='class' defaultTheme='system' enableSystem>
           <header className='fixed w-full top-0 z-50 border-b bg-background/80 backdrop-blur-sm'>
             <div className='container flex h-14 items-center justify-between'>
