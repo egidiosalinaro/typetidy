@@ -7,6 +7,7 @@ import {
   AccordionTrigger,
 } from '@/components/ui/accordion';
 import { ScrollButton } from '@/components/scroll-button';
+import { Footer } from '@/components/footer';
 
 export default async function Home() {
   return (
@@ -237,6 +238,8 @@ export default async function Home() {
           <Button size='lg'>Start Writing Better Today</Button>
         </Link>
       </section>
+
+      <Footer />
     </div>
   );
 }
