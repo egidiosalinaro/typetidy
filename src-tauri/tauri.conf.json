@@ -1,43 +1,31 @@
 {
-  "$schema": "../node_modules/@tauri-apps/cli/config.schema.json",
+  "$schema": "../node_modules/@tauri-apps/cli/schema.json",
+  "build": {
+    "beforeBuildCommand": "npm run build",
+    "beforeDevCommand": "npm run dev",
+    "devUrl": "http://localhost:3000",
+    "frontendDist": "../.next"
+  },
+  "identifier": "com.typetidy.app",
   "productName": "TypeTidy",
   "version": "0.1.0",
-  "identifier": "com.typetidy.app",
-  "build": {
-    "beforeDevCommand": "npm run dev",
-    "beforeBuildCommand": "npm run build",
-    "devPath": "http://localhost:3000",
-    "distDir": "../.next"
-  },
-  "package": {
-    "productName": "TypeTidy",
-    "version": "0.1.0"
-  },
-  "tauri": {
-    "allowlist": {
-      "all": false,
-      "shell": {
-        "all": false,
-        "open": true
-      }
-    },
-    "bundle": {
-      "active": true,
-      "targets": "all",
-      "identifier": "com.typetidy.app",
-      "icon": ["icons/icon.png"]
-    },
+  "app": {
     "security": {
       "csp": null
     },
     "windows": [
       {
         "fullscreen": false,
+        "height": 800,
         "resizable": true,
         "title": "TypeTidy",
-        "width": 1200,
-        "height": 800
+        "width": 1200
       }
     ]
+  },
+  "bundle": {
+    "active": true,
+    "targets": ["dmg"],
+    "icon": ["icons/icon.png"]
   }
 }
