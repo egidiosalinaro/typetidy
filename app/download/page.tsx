@@ -1,5 +1,6 @@
 import { Button } from '@/components/ui/button';
 import { AppleIcon } from '@/components/icons';
+import Link from 'next/link';
 
 export default function DownloadPage() {
   return (
@@ -28,12 +29,25 @@ export default function DownloadPage() {
                 Compatible with macOS 11.0 (Big Sur) and later
               </p>
             </div>
-            <Button className='w-full' size='lg'>
-              Download for Mac
-            </Button>
+            <Link
+              href='https://github.com/egidiosalinaro/typetidy/releases/latest/download/TypeTidy.dmg'
+              className='w-full'
+            >
+              <Button className='w-full' size='lg'>
+                Download for Mac (Universal)
+              </Button>
+            </Link>
             <p className='text-xs text-center text-muted-foreground'>
-              Version 1.0.0 • Released {new Date().toLocaleDateString()}
+              Version 1.0.0 • {new Date().toLocaleDateString()}
             </p>
+            <div className='text-xs text-center text-muted-foreground space-y-2'>
+              <p>After downloading:</p>
+              <ol className='list-decimal list-inside text-left space-y-1'>
+                <li>Open the .dmg file</li>
+                <li>Drag TypeTidy to your Applications folder</li>
+                <li>Open TypeTidy from your Applications</li>
+              </ol>
+            </div>
           </div>
         </div>
 
