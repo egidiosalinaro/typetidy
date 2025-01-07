@@ -4,33 +4,40 @@
   "version": "0.1.0",
   "identifier": "com.typetidy.app",
   "build": {
-    "frontendDist": "../out",
-    "devUrl": "http://localhost:3000",
     "beforeDevCommand": "npm run dev",
-    "beforeBuildCommand": "npm run build"
+    "beforeBuildCommand": "npm run build",
+    "devPath": "http://localhost:3000",
+    "distDir": "../.next"
   },
-  "app": {
-    "windows": [
-      {
-        "title": "TypeTidy",
-        "width": 800,
-        "height": 600,
-        "resizable": true,
-        "fullscreen": false
+  "package": {
+    "productName": "TypeTidy",
+    "version": "0.1.0"
+  },
+  "tauri": {
+    "allowlist": {
+      "all": false,
+      "shell": {
+        "all": false,
+        "open": true
       }
-    ],
+    },
+    "bundle": {
+      "active": true,
+      "targets": "all",
+      "identifier": "com.typetidy.app",
+      "icon": ["icons/icon.png"]
+    },
     "security": {
       "csp": null
-    }
-  },
-  "bundle": {
-    "active": true,
-    "targets": "all",
-    "icon": [
-      "icons/32x32.png",
-      "icons/128x128.png",
-      "icons/128x128@2x.png",
-      "icons/icon.png"
+    },
+    "windows": [
+      {
+        "fullscreen": false,
+        "resizable": true,
+        "title": "TypeTidy",
+        "width": 1200,
+        "height": 800
+      }
     ]
   }
 }
