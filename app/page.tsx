@@ -6,6 +6,7 @@ import {
   AccordionItem,
   AccordionTrigger,
 } from '@/components/ui/accordion';
+import { ScrollButton } from '@/components/scroll-button';
 
 export default async function Home() {
   return (
@@ -20,9 +21,62 @@ export default async function Home() {
           <Link href='/sign-up'>
             <Button size='lg'>Get Started Free</Button>
           </Link>
-          <Button size='lg' variant='outline'>
-            See How It Works
-          </Button>
+          <ScrollButton />
+        </div>
+      </section>
+
+      {/* How It Works Section */}
+      <section id='how-it-works' className='py-24 px-4 bg-accent/10'>
+        <div className='max-w-6xl mx-auto'>
+          <div className='text-center space-y-4 mb-16'>
+            <h2 className='text-4xl font-bold text-foreground'>
+              How TypeTidy Works
+            </h2>
+            <p className='text-lg text-muted-foreground'>
+              Simple, non-invasive, and effective
+            </p>
+          </div>
+
+          <div className='grid md:grid-cols-3 gap-8'>
+            <div className='space-y-4 text-center'>
+              <div className='w-16 h-16 bg-primary/10 rounded-full flex items-center justify-center mx-auto'>
+                <span className='text-2xl text-primary'>1</span>
+              </div>
+              <h3 className='text-xl font-semibold text-foreground'>
+                Type Anywhere
+              </h3>
+              <p className='text-muted-foreground'>
+                Write naturally in any application on your computer. TypeTidy
+                runs silently in the background.
+              </p>
+            </div>
+
+            <div className='space-y-4 text-center'>
+              <div className='w-16 h-16 bg-primary/10 rounded-full flex items-center justify-center mx-auto'>
+                <span className='text-2xl text-primary'>2</span>
+              </div>
+              <h3 className='text-xl font-semibold text-foreground'>
+                Request Check
+              </h3>
+              <p className='text-muted-foreground'>
+                Press your preferred shortcut key or click the toolbar icon when
+                you want to check your writing.
+              </p>
+            </div>
+
+            <div className='space-y-4 text-center'>
+              <div className='w-16 h-16 bg-primary/10 rounded-full flex items-center justify-center mx-auto'>
+                <span className='text-2xl text-primary'>3</span>
+              </div>
+              <h3 className='text-xl font-semibold text-foreground'>
+                Review & Apply
+              </h3>
+              <p className='text-muted-foreground'>
+                Review suggested improvements in a clean interface and apply the
+                changes you want with a single click.
+              </p>
+            </div>
+          </div>
         </div>
       </section>
 
