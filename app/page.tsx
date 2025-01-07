@@ -19,7 +19,7 @@ export default async function Home() {
           A distraction-free writing assistant that works everywhere you type
         </p>
         <div className='flex gap-4 justify-center'>
-          <Link href='/sign-up'>
+          <Link href='/download'>
             <Button size='lg'>Get Started Free</Button>
           </Link>
           <ScrollButton />
@@ -234,7 +234,7 @@ export default async function Home() {
           Join thousands of writers who choose TypeTidy for a cleaner, more
           focused writing experience
         </p>
-        <Link href='/sign-up'>
+        <Link href='/download'>
           <Button size='lg'>Start Writing Better Today</Button>
         </Link>
       </section>
