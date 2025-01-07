@@ -11,6 +11,13 @@ pub fn run() {
       }
       Ok(())
     })
+    .on_window_event(|window, event| {
+      if let tauri::WindowEvent::Focused(focused) = event {
+        if *focused {
+          window.set_title("TypeTidy").unwrap();
+        }
+      }
+    })
     .run(tauri::generate_context!())
     .expect("error while running tauri application");
 }
