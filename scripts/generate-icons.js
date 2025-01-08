@@ -12,31 +12,30 @@ if (!fs.existsSync(iconsDir)) {
 const svgBuffer = fs.readFileSync(path.join(__dirname, '../public/logo.svg'));
 
 // Define the icon sizes we need for macOS
-const sizes = [
-  { size: 16, filename: '16x16.png' },
-  { size: 32, filename: '32x32.png' },
-  { size: 64, filename: '32x32@2x.png' },
-  { size: 128, filename: '128x128.png' },
-  { size: 256, filename: '128x128@2x.png' },
-  { size: 256, filename: '256x256.png' },
-  { size: 512, filename: '256x256@2x.png' },
-  { size: 512, filename: '512x512.png' },
-  { size: 1024, filename: '512x512@2x.png' },
-  { size: 1024, filename: 'icon.png' },
+const macOSIcons = [
+  { size: 32, name: '32x32.png' },
+  { size: 128, name: '128x128.png' },
+  { size: 256, name: '128x128@2x.png' },
+  { size: 256, name: 'icon.png' },
 ];
 
 // Generate PNG icons
 async function generateIcons() {
-  for (const { size, filename } of sizes) {
-    try {
+  try {
+    // Generate macOS icons
+    for (const icon of macOSIcons) {
       await sharp(svgBuffer)
-        .resize(size, size)
+        .resize(icon.size, icon.size, {
+          fit: 'contain',
+          background: { r: 0, g: 0, b: 0, alpha: 0 },
+        })
         .png()
-        .toFile(path.join(iconsDir, filename));
-      console.log(`Generated ${filename}`);
-    } catch (err) {
-      console.error(`Error generating ${filename}:`, err);
+        .toFile(path.join(iconsDir, icon.name));
+      console.log(`Generated ${icon.name}`);
     }
+  } catch (err) {
+    console.error('Error generating icons:', err);
+    process.exit(1);
   }
 }
 
