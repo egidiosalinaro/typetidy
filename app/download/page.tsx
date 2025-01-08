@@ -30,7 +30,7 @@ export default function DownloadPage() {
               </p>
             </div>
             <Link
-              href='https://github.com/egidiosalinaro/typetidy/releases/latest/download/TypeTidy_0.1.1_aarch64.dmg'
+              href='https://github.com/egidiosalinaro/typetidy/releases/download/v0.1.0/TypeTidy_0.1.0_aarch64.dmg'
               className='w-full'
             >
               <Button className='w-full' size='lg'>
