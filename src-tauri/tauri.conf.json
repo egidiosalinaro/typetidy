@@ -11,8 +11,7 @@
   "version": "0.1.1",
   "app": {
     "security": {
-      "csp": null,
-      "macosPrivateApi": true
+      "csp": null
     },
     "windows": [
       {
@@ -26,32 +25,12 @@
   },
   "bundle": {
     "active": true,
-    "category": "Productivity",
-    "copyright": "",
-    "deb": {
-      "depends": []
-    },
-    "externalBin": [],
+    "targets": ["dmg"],
     "icon": [
       "icons/32x32.png",
       "icons/128x128.png",
       "icons/128x128@2x.png",
       "icons/icon.png"
-    ],
-    "longDescription": "TypeTidy - Your AI Writing Assistant",
-    "macOS": {
-      "entitlements": null,
-      "exceptionDomain": "",
-      "frameworks": [],
-      "providerShortName": null,
-      "signingIdentity": null
-    },
-    "shortDescription": "",
-    "targets": ["dmg"],
-    "windows": {
-      "certificateThumbprint": null,
-      "digestAlgorithm": "sha256",
-      "timestampUrl": ""
-    }
+    ]
   }
 }
