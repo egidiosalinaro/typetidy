@@ -42,13 +42,21 @@ jobs:
       - name: Generate icons
         run: npm run generate-icons
 
+      - name: Setup Keychain
+        if: matrix.platform == 'macos-latest'
+        run: |
+          security create-keychain -p "${{ secrets.KEYCHAIN_PASSWORD }}" build.keychain
+          security default-keychain -s build.keychain
+          security unlock-keychain -p "${{ secrets.KEYCHAIN_PASSWORD }}" build.keychain
+          security set-keychain-settings -t 3600 -l ~/Library/Keychains/build.keychain
+
       - name: Build the app
         uses: tauri-apps/tauri-action@v0
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           APPLE_ID: ${{ secrets.APPLE_ID }}
           APPLE_PASSWORD: ${{ secrets.APPLE_PASSWORD }}
-          APPLE_SIGNING_IDENTITY: null
+          APPLE_SIGNING_IDENTITY: 'Apple Development'
         with:
           args: --target ${{ matrix.target }}
           tagName: ${{ github.ref_name }}
