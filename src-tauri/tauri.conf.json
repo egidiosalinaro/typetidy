@@ -3,13 +3,27 @@
   "build": {
     "beforeBuildCommand": "npm run build",
     "beforeDevCommand": "npm run dev",
-    "devUrl": "http://localhost:3000",
-    "frontendDist": "../.next"
+    "devPath": "http://localhost:3000",
+    "distDir": "../.next"
   },
-  "identifier": "com.typetidy.app",
-  "productName": "TypeTidy",
-  "version": "0.1.1",
-  "app": {
+  "tauri": {
+    "bundle": {
+      "active": true,
+      "targets": ["dmg"],
+      "identifier": "com.typetidy.app",
+      "icon": [
+        "icons/32x32.png",
+        "icons/128x128.png",
+        "icons/128x128@2x.png",
+        "icons/icon.png"
+      ]
+    },
+    "allowlist": {
+      "shell": {
+        "open": true
+      }
+    },
+    "macOSPrivateApi": true,
     "security": {
       "csp": null
     },
@@ -21,16 +35,6 @@
         "title": "TypeTidy",
         "width": 1200
       }
-    ]
-  },
-  "bundle": {
-    "active": true,
-    "targets": ["dmg"],
-    "icon": [
-      "icons/32x32.png",
-      "icons/128x128.png",
-      "icons/128x128@2x.png",
-      "icons/icon.png"
     ]
   }
 }
