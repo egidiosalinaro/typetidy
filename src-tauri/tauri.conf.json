@@ -16,7 +16,13 @@
         "icons/128x128.png",
         "icons/128x128@2x.png",
         "icons/icon.png"
-      ]
+      ],
+      "macOS": {
+        "frameworks": [],
+        "minimumSystemVersion": "10.13",
+        "signingIdentity": null,
+        "entitlements": null
+      }
     },
     "allowlist": {
       "shell": {
