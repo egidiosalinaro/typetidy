@@ -1,6 +1,6 @@
 [package]
 name = "TypeTidy"
-version = "0.1.0"
+version = "0.1.1"
 description = "TypeTidy - Your AI Writing Assistant"
 authors = ["you"]
 license = ""

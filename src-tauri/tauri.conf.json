@@ -8,7 +8,7 @@
   },
   "identifier": "com.typetidy.app",
   "productName": "TypeTidy",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "app": {
     "security": {
       "csp": null
@@ -21,12 +21,11 @@
         "title": "TypeTidy",
         "width": 1200
       }
-    ],
-    "macosPrivateApi": true
+    ]
   },
   "bundle": {
     "active": true,
-    "targets": ["dmg", "app", "updater"],
+    "targets": ["dmg"],
     "icon": [
       "icons/32x32.png",
       "icons/128x128.png",
