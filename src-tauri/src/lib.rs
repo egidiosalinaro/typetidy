@@ -6,7 +6,7 @@ pub fn run() {
     })
     .on_window_event(|e| {
       if let tauri::WindowEvent::Focused(focused) = e.event() {
-        if focused {
+        if *focused {
           e.window().set_title("TypeTidy").unwrap();
         }
       }
