@@ -54,13 +54,33 @@ jobs:
           releaseDraft: true
           prerelease: false
 
+      - name: Debug Build Output
+        if: matrix.platform == 'macos-latest'
+        run: |
+          echo "Listing build directory contents:"
+          ls -R src-tauri/target/
+
       - name: Sign App Bundle
         if: matrix.platform == 'macos-latest'
         run: |
-          APP_PATH="src-tauri/target/${{ matrix.target }}/release/bundle/macos/TypeTidy.app"
-          # Create an ad-hoc signature
-          codesign --force --deep --sign - --timestamp "$APP_PATH"
-          # Also sign the DMG
-          DMG_PATH="src-tauri/target/${{ matrix.target }}/release/bundle/dmg/TypeTidy_${{ github.ref_name }}_${{ matrix.target }}.dmg"
-          codesign --force --sign - --timestamp "$DMG_PATH"
+          # Find the actual .app bundle
+          APP_BUNDLE=$(find src-tauri/target -name "TypeTidy.app" -type d)
+          if [ -n "$APP_BUNDLE" ]; then
+            echo "Found app bundle at: $APP_BUNDLE"
+            codesign --force --deep --sign - --timestamp "$APP_BUNDLE"
+          else
+            echo "No .app bundle found!"
+            exit 1
+          fi
+
+          # Find the DMG file
+          DMG_FILE=$(find src-tauri/target -name "*.dmg" -type f)
+          if [ -n "$DMG_FILE" ]; then
+            echo "Found DMG at: $DMG_FILE"
+            codesign --force --sign - --timestamp "$DMG_FILE"
+          else
+            echo "No DMG file found!"
+            exit 1
+          fi
+
           echo "✓ Signed app bundle and DMG with ad-hoc signature"
