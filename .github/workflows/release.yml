@@ -42,7 +42,21 @@ jobs:
       - name: Generate icons
         run: npm run generate-icons
 
-      - name: Build the app
+      - name: Create self-signed certificate
+        if: matrix.platform == 'macos-latest'
+        run: |
+          security create-keychain -p "${{ secrets.KEYCHAIN_PASSWORD }}" build.keychain
+          security default-keychain -s build.keychain
+          security unlock-keychain -p "${{ secrets.KEYCHAIN_PASSWORD }}" build.keychain
+          security set-keychain-settings -t 3600 -l ~/Library/Keychains/build.keychain
+
+          # Create a self-signed certificate
+          security create-certificate-authority \
+            -c "TypeTidy Development" \
+            -o /tmp/root.cer \
+            -k build.keychain
+
+      - name: Build and Sign
         uses: tauri-apps/tauri-action@v0
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
@@ -53,3 +67,10 @@ jobs:
           releaseBody: 'See the assets to download and install this version.'
           releaseDraft: true
           prerelease: false
+
+      - name: Sign App Bundle
+        if: matrix.platform == 'macos-latest'
+        run: |
+          APP_PATH="src-tauri/target/${{ matrix.target }}/release/bundle/macos/TypeTidy.app"
+          codesign --force --deep --sign - "$APP_PATH"
+          echo "✓ Signed app bundle with ad-hoc signature"
