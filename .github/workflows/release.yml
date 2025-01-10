@@ -42,45 +42,27 @@ jobs:
       - name: Generate icons
         run: npm run generate-icons
 
-      - name: Build the app
+      - name: Build and Sign
         uses: tauri-apps/tauri-action@v0
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          ENABLE_CODE_SIGNING: true
+          APPLE_CERTIFICATE: ${{ secrets.APPLE_CERTIFICATE }}
+          APPLE_CERTIFICATE_PASSWORD: ${{ secrets.APPLE_CERTIFICATE_PASSWORD }}
+          APPLE_SIGNING_IDENTITY: ${{ secrets.APPLE_SIGNING_IDENTITY }}
+          APPLE_ID: ${{ secrets.APPLE_ID }}
+          APPLE_PASSWORD: ${{ secrets.APPLE_PASSWORD }}
         with:
           args: --target ${{ matrix.target }}
           tagName: ${{ github.ref_name }}
           releaseName: 'TypeTidy v${{ github.ref_name }}'
-          releaseBody: 'See the assets to download and install this version.'
+          releaseBody: |
+            To open TypeTidy on macOS:
+            1. Download the DMG file for your Mac (x86_64 for Intel, aarch64 for Apple Silicon)
+            2. Open the DMG file
+            3. Drag TypeTidy to your Applications folder
+            4. In Applications, right-click (or Control-click) on TypeTidy and select "Open"
+            5. Click "Open" in the security dialog that appears
+            After this first-time process, you can open TypeTidy normally by double-clicking.
           releaseDraft: true
           prerelease: false
-
-      - name: Debug Build Output
-        if: matrix.platform == 'macos-latest'
-        run: |
-          echo "Listing build directory contents:"
-          ls -R src-tauri/target/
-
-      - name: Sign App Bundle
-        if: matrix.platform == 'macos-latest'
-        run: |
-          # Find the actual .app bundle
-          APP_BUNDLE=$(find src-tauri/target -name "TypeTidy.app" -type d)
-          if [ -n "$APP_BUNDLE" ]; then
-            echo "Found app bundle at: $APP_BUNDLE"
-            codesign --force --deep --sign - --timestamp "$APP_BUNDLE"
-          else
-            echo "No .app bundle found!"
-            exit 1
-          fi
-
-          # Find the DMG file
-          DMG_FILE=$(find src-tauri/target -name "*.dmg" -type f)
-          if [ -n "$DMG_FILE" ]; then
-            echo "Found DMG at: $DMG_FILE"
-            codesign --force --sign - --timestamp "$DMG_FILE"
-          else
-            echo "No DMG file found!"
-            exit 1
-          fi
-
-          echo "✓ Signed app bundle and DMG with ad-hoc signature"
