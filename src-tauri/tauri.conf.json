@@ -20,7 +20,7 @@
       "macOS": {
         "frameworks": [],
         "minimumSystemVersion": "10.13",
-        "signingIdentity": "Apple Development",
+        "signingIdentity": null,
         "entitlements": null
       }
     },
