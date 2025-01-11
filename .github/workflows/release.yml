@@ -45,6 +45,7 @@ jobs:
           echo "${{ secrets.APPLE_CERTIFICATE }}" | base64 --decode > certificate.p12
           security import certificate.p12 -k build.keychain -P "${{ secrets.APPLE_CERTIFICATE_PASSWORD }}" -T /usr/bin/codesign
           security set-key-partition-list -S apple-tool:,apple:,codesign: -s -k "temp_password" build.keychain
+          security find-identity -v -p codesigning build.keychain
 
       - name: Build and Sign
         uses: tauri-apps/tauri-action@v0
@@ -52,6 +53,10 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           APPLE_CERTIFICATE: ${{ secrets.APPLE_CERTIFICATE }}
           APPLE_CERTIFICATE_PASSWORD: ${{ secrets.APPLE_CERTIFICATE_PASSWORD }}
+          APPLE_SIGNING_IDENTITY: 'Developer ID Application: Egidio Salinaro (A6ZJ3YH4YL)'
+          TAURI_SIGNING_PRIVATE_KEY: ${{ secrets.APPLE_CERTIFICATE }}
+          TAURI_SIGNING_PRIVATE_KEY_PASSWORD: ${{ secrets.APPLE_CERTIFICATE_PASSWORD }}
+          ENABLE_CODE_SIGNING: true
         with:
           args: --target ${{ matrix.target }}
           tagName: ${{ github.ref_name }}
