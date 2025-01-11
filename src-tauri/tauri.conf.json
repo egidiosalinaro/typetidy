@@ -20,7 +20,7 @@
       "macOS": {
         "frameworks": [],
         "minimumSystemVersion": "10.13",
-        "signingIdentity": "-",
+        "signingIdentity": "Developer ID Application: Egidio Salinaro (A6ZJ3YH4YL)",
         "entitlements": null
       }
     },
