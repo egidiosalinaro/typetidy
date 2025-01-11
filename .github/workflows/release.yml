@@ -30,17 +30,22 @@ jobs:
         with:
           targets: ${{ matrix.target }}
 
-      - name: Install dependencies (ubuntu only)
-        if: matrix.platform == 'ubuntu-20.04'
-        run: |
-          sudo apt-get update
-          sudo apt-get install -y libgtk-3-dev libwebkit2gtk-4.0-dev libappindicator3-dev librsvg2-dev patchelf
-
       - name: Install frontend dependencies
         run: npm install
 
       - name: Generate icons
         run: npm run generate-icons
+
+      - name: Setup Keychain
+        if: matrix.platform == 'macos-latest'
+        run: |
+          security create-keychain -p "${{ secrets.APPLE_CERTIFICATE_PASSWORD }}" build.keychain
+          security default-keychain -s build.keychain
+          security unlock-keychain -p "${{ secrets.APPLE_CERTIFICATE_PASSWORD }}" build.keychain
+          security set-keychain-settings -t 3600 -l ~/Library/Keychains/build.keychain
+          echo "${{ secrets.APPLE_CERTIFICATE }}" | base64 --decode > certificate.p12
+          security import certificate.p12 -k build.keychain -P "${{ secrets.APPLE_CERTIFICATE_PASSWORD }}" -T /usr/bin/codesign
+          security set-key-partition-list -S apple-tool:,apple:,codesign: -s -k "${{ secrets.APPLE_CERTIFICATE_PASSWORD }}" build.keychain
 
       - name: Build and Sign
         uses: tauri-apps/tauri-action@v0
@@ -58,11 +63,15 @@ jobs:
           releaseName: 'TypeTidy v${{ github.ref_name }}'
           releaseBody: |
             To open TypeTidy on macOS:
-            1. Download the DMG file for your Mac (x86_64 for Intel, aarch64 for Apple Silicon)
+            1. Download the DMG file for your Mac:
+               - Intel Mac (x86_64): TypeTidy_x86_64.dmg
+               - Apple Silicon Mac (M1/M2): TypeTidy_aarch64.dmg
             2. Open the DMG file
             3. Drag TypeTidy to your Applications folder
-            4. In Applications, right-click (or Control-click) on TypeTidy and select "Open"
-            5. Click "Open" in the security dialog that appears
-            After this first-time process, you can open TypeTidy normally by double-clicking.
+            4. The first time you open it:
+               - Right-click (or Control-click) on TypeTidy in Applications
+               - Select "Open" from the menu
+               - Click "Open" in the security dialog
+            After this first-time process, you can open TypeTidy normally.
           releaseDraft: true
           prerelease: false
