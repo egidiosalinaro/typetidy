@@ -44,7 +44,8 @@ jobs:
           security unlock-keychain -p "${{ secrets.APPLE_CERTIFICATE_PASSWORD }}" build.keychain
           security set-keychain-settings -t 3600 build.keychain
           echo "${{ secrets.APPLE_CERTIFICATE }}" | base64 --decode > certificate.p12
-          security import certificate.p12 -k build.keychain -P "${{ secrets.APPLE_CERTIFICATE_PASSWORD }}" -T /usr/bin/codesign
+          security import certificate.p12 -k build.keychain -P "${{ secrets.APPLE_CERTIFICATE_PASSWORD }}" -T /usr/bin/codesign -f pkcs12
+          security list-keychains -d user -s build.keychain
           security set-key-partition-list -S apple-tool:,apple:,codesign: -s -k "${{ secrets.APPLE_CERTIFICATE_PASSWORD }}" build.keychain
           rm certificate.p12
           security find-identity -v -p codesigning build.keychain
