@@ -4,16 +4,14 @@ on:
     tags:
       - 'v*'
 
-permissions:
-  contents: write
-
 jobs:
   release:
+    permissions:
+      contents: write
     strategy:
       fail-fast: false
       matrix:
         platform: [macos-latest]
-        target: [aarch64-apple-darwin, x86_64-apple-darwin]
     runs-on: ${{ matrix.platform }}
 
     steps:
@@ -24,57 +22,49 @@ jobs:
         uses: actions/setup-node@v4
         with:
           node-version: 20
+          cache: 'npm'
 
       - name: Install Rust stable
         uses: dtolnay/rust-toolchain@stable
-        with:
-          targets: ${{ matrix.target }}
+
+      - name: Install dependencies (ubuntu only)
+        if: matrix.platform == 'ubuntu-20.04'
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y libgtk-3-dev libwebkit2gtk-4.0-dev libappindicator3-dev librsvg2-dev patchelf
 
       - name: Install frontend dependencies
         run: npm install
 
-      - name: Generate icons
-        run: npm run generate-icons
-
-      - name: Setup Keychain
+      - name: Import Apple Certificate
         if: matrix.platform == 'macos-latest'
+        env:
+          APPLE_CERTIFICATE: ${{ secrets.APPLE_CERTIFICATE }}
+          APPLE_CERTIFICATE_PASSWORD: ${{ secrets.APPLE_CERTIFICATE_PASSWORD }}
+          APPLE_SIGNING_IDENTITY: ${{ secrets.APPLE_SIGNING_IDENTITY }}
+          KEYCHAIN_PASSWORD: ${{ secrets.KEYCHAIN_PASSWORD }}
         run: |
-          security create-keychain -p "${{ secrets.APPLE_CERTIFICATE_PASSWORD }}" build.keychain
+          echo "$APPLE_CERTIFICATE" | base64 --decode > certificate.p12
+          security create-keychain -p "$KEYCHAIN_PASSWORD" build.keychain
           security default-keychain -s build.keychain
-          security unlock-keychain -p "${{ secrets.APPLE_CERTIFICATE_PASSWORD }}" build.keychain
-          security set-keychain-settings -t 3600 build.keychain
-          echo "${{ secrets.APPLE_CERTIFICATE }}" | base64 --decode > certificate.p12
-          security import certificate.p12 -k build.keychain -P "${{ secrets.APPLE_CERTIFICATE_PASSWORD }}" -T /usr/bin/codesign -f pkcs12
-          security list-keychains -d user -s build.keychain
-          security set-key-partition-list -S apple-tool:,apple:,codesign: -s -k "${{ secrets.APPLE_CERTIFICATE_PASSWORD }}" build.keychain
+          security unlock-keychain -p "$KEYCHAIN_PASSWORD" build.keychain
+          security import certificate.p12 -k build.keychain -P "$APPLE_CERTIFICATE_PASSWORD" -T /usr/bin/codesign
+          security set-key-partition-list -S apple-tool:,apple:,codesign: -s -k "$KEYCHAIN_PASSWORD" build.keychain
           rm certificate.p12
-          security find-identity -v -p codesigning build.keychain
 
-      - name: Build and Sign
+      - name: Build the app
         uses: tauri-apps/tauri-action@v0
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           APPLE_CERTIFICATE: ${{ secrets.APPLE_CERTIFICATE }}
           APPLE_CERTIFICATE_PASSWORD: ${{ secrets.APPLE_CERTIFICATE_PASSWORD }}
-          APPLE_SIGNING_IDENTITY: 'Developer ID Application: Egidio Salinaro (A6ZJ3YH4YL)'
-          TAURI_SIGNING_PRIVATE_KEY: ${{ secrets.APPLE_CERTIFICATE }}
-          TAURI_SIGNING_PRIVATE_KEY_PASSWORD: ${{ secrets.APPLE_CERTIFICATE_PASSWORD }}
-          ENABLE_CODE_SIGNING: true
+          APPLE_SIGNING_IDENTITY: ${{ secrets.APPLE_SIGNING_IDENTITY }}
+          APPLE_ID: ${{ secrets.APPLE_ID }}
+          APPLE_PASSWORD: ${{ secrets.APPLE_PASSWORD }}
+          APPLE_TEAM_ID: ${{ secrets.APPLE_TEAM_ID }}
         with:
-          args: --target ${{ matrix.target }}
           tagName: ${{ github.ref_name }}
           releaseName: 'TypeTidy v${{ github.ref_name }}'
-          releaseBody: |
-            To open TypeTidy on macOS:
-            1. Download the DMG file for your Mac:
-               - Intel Mac (x86_64): TypeTidy_x86_64.dmg
-               - Apple Silicon Mac (M1/M2): TypeTidy_aarch64.dmg
-            2. Open the DMG file
-            3. Drag TypeTidy to your Applications folder
-            4. The first time you open it:
-               - Right-click (or Control-click) on TypeTidy in Applications
-               - Select "Open" from the menu
-               - Click "Open" in the security dialog
-            After this first-time process, you can open TypeTidy normally.
+          releaseBody: 'See the assets to download this version and install.'
           releaseDraft: true
           prerelease: false
