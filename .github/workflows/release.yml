@@ -14,6 +14,7 @@ jobs:
         platform: [macos-latest]
         target: [aarch64-apple-darwin, x86_64-apple-darwin]
     runs-on: ${{ matrix.platform }}
+    timeout-minutes: 30
 
     steps:
       - name: Checkout repository
@@ -49,6 +50,7 @@ jobs:
           security unlock-keychain -p "$KEYCHAIN_PASSWORD" build.keychain
           security import certificate.p12 -k build.keychain -P "$APPLE_CERTIFICATE_PASSWORD" -T /usr/bin/codesign
           security set-key-partition-list -S apple-tool:,apple:,codesign: -s -k "$KEYCHAIN_PASSWORD" build.keychain
+          security find-identity -v -p codesigning build.keychain
           rm certificate.p12
 
       - name: Build and Sign
@@ -70,20 +72,37 @@ jobs:
           releaseDraft: true
           prerelease: false
 
-      - name: Notarize App
+      - name: Prepare DMG for Notarization
+        if: matrix.platform == 'macos-latest'
+        run: |
+          echo "Creating DMG..."
+          DMG_PATH="src-tauri/target/${{ matrix.target }}/release/bundle/dmg/TypeTidy_${{ github.ref_name }}_${{ matrix.target }}.dmg"
+          echo "DMG path: $DMG_PATH"
+          ls -la "$(dirname "$DMG_PATH")"
+          if [ ! -f "$DMG_PATH" ]; then
+            echo "Error: DMG file not found!"
+            exit 1
+          fi
+
+      - name: Notarize DMG
         if: matrix.platform == 'macos-latest'
         env:
           APPLE_ID: ${{ secrets.APPLE_ID }}
           APPLE_TEAM_ID: ${{ secrets.APPLE_TEAM_ID }}
           APPLE_PASSWORD: ${{ secrets.APPLE_PASSWORD }}
         run: |
+          echo "Starting notarization..."
           xcrun notarytool submit "src-tauri/target/${{ matrix.target }}/release/bundle/dmg/TypeTidy_${{ github.ref_name }}_${{ matrix.target }}.dmg" \
             --apple-id "$APPLE_ID" \
             --password "$APPLE_PASSWORD" \
             --team-id "$APPLE_TEAM_ID" \
-            --wait
+            --wait \
+            --progress
+          echo "Notarization completed"
 
-      - name: Staple Notarization
+      - name: Staple DMG
         if: matrix.platform == 'macos-latest'
         run: |
+          echo "Stapling notarization ticket..."
           xcrun stapler staple "src-tauri/target/${{ matrix.target }}/release/bundle/dmg/TypeTidy_${{ github.ref_name }}_${{ matrix.target }}.dmg"
+          echo "Stapling completed"
