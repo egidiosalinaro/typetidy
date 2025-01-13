@@ -12,7 +12,6 @@ jobs:
       fail-fast: false
       matrix:
         platform: [macos-latest]
-        target: [aarch64-apple-darwin, x86_64-apple-darwin]
     runs-on: ${{ matrix.platform }}
     timeout-minutes: 30
 
@@ -28,8 +27,6 @@ jobs:
 
       - name: Install Rust stable
         uses: dtolnay/rust-toolchain@stable
-        with:
-          targets: ${{ matrix.target }}
 
       - name: Install frontend dependencies
         run: npm install
@@ -37,7 +34,7 @@ jobs:
       - name: Generate icons
         run: npm run generate-icons
 
-      - name: Setup Keychain
+      - name: Import Certificate
         if: matrix.platform == 'macos-latest'
         env:
           APPLE_CERTIFICATE: ${{ secrets.APPLE_CERTIFICATE }}
@@ -50,7 +47,6 @@ jobs:
           security unlock-keychain -p "$KEYCHAIN_PASSWORD" build.keychain
           security import certificate.p12 -k build.keychain -P "$APPLE_CERTIFICATE_PASSWORD" -T /usr/bin/codesign
           security set-key-partition-list -S apple-tool:,apple:,codesign: -s -k "$KEYCHAIN_PASSWORD" build.keychain
-          security find-identity -v -p codesigning build.keychain
           rm certificate.p12
 
       - name: Build and Sign
@@ -63,7 +59,6 @@ jobs:
           APPLE_TEAM_ID: ${{ secrets.APPLE_TEAM_ID }}
           APPLE_PASSWORD: ${{ secrets.APPLE_PASSWORD }}
         with:
-          args: --target ${{ matrix.target }}
           tagName: ${{ github.ref_name }}
           releaseName: 'TypeTidy v${{ github.ref_name }}'
           releaseBody: |
