@@ -60,7 +60,7 @@ jobs:
           tagName: ${{ github.ref_name }}
           releaseName: 'TypeTidy v${{ github.ref_name }}'
           releaseBody: |
-            New release of TypeTidy.
+            New release of TypeTidy!
             Visit https://typetidy.com/download to get the correct version for your Mac.
           releaseDraft: true
           prerelease: false
