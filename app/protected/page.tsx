@@ -1,7 +1,7 @@
-import { Button } from '@/components/ui/button';
 import { createClient } from '@/utils/supabase/server';
 import { CheckCircle2 } from 'lucide-react';
 import { redirect } from 'next/navigation';
+import { ReturnToAppButton } from '@/components/return-to-app-button';
 
 export default async function ProtectedPage() {
   const supabase = await createClient();
@@ -27,14 +27,7 @@ export default async function ProtectedPage() {
           desktop app to continue.
         </p>
 
-        <div className='pt-4'>
-          <Button size='lg' className='w-full' onClick={() => window.close()}>
-            Return to Desktop App
-          </Button>
-          <p className='text-xs text-muted-foreground mt-2'>
-            You can close this window and go back to the app
-          </p>
-        </div>
+        <ReturnToAppButton />
       </div>
     </div>
   );
