@@ -41,7 +41,7 @@
         "resizable": true,
         "title": "TypeTidy",
         "width": 1200,
-        "url": "/desktop"
+        "url": "http://localhost:3000/desktop"
       }
     ]
   }
