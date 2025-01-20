@@ -4,6 +4,7 @@ import { ThemeProvider } from 'next-themes';
 import { ThemeSwitcher } from '@/components/theme-switcher';
 import Image from 'next/image';
 import Link from 'next/link';
+import AuthButton from '@/components/header-auth';
 
 const jakarta = Plus_Jakarta_Sans({
   subsets: ['latin'],
@@ -50,6 +51,7 @@ export default function RootLayout({
                 </Link>
               </div>
               <nav className='flex items-center gap-6'>
+                <AuthButton />
                 <ThemeSwitcher />
               </nav>
             </div>
