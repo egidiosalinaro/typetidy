@@ -6,20 +6,12 @@ import { useState } from 'react';
 export function ReturnToAppButton() {
   const [isLoading, setIsLoading] = useState(false);
 
-  const handleReturn = async () => {
+  const handleReturn = () => {
     setIsLoading(true);
     try {
-      // Get Tauri window API
-      const { getCurrent } = await import('@tauri-apps/api/window');
-      // Get and focus the main window
-      const mainWindow = getCurrent();
-      await mainWindow.setFocus();
-      // Close the browser window
       window.close();
     } catch (error) {
-      console.error('Failed to return to app:', error);
-      // If Tauri APIs fail, just try to close the window
-      window.close();
+      console.error('Failed to close window:', error);
     } finally {
       setIsLoading(false);
     }
@@ -33,10 +25,10 @@ export function ReturnToAppButton() {
         onClick={handleReturn}
         disabled={isLoading}
       >
-        {isLoading ? 'Returning to App...' : 'Return to Desktop App'}
+        {isLoading ? 'Closing...' : 'Close and Return to App'}
       </Button>
       <p className='text-xs text-muted-foreground mt-2'>
-        You can close this window and go back to the app
+        Close this window to return to the TypeTidy app
       </p>
     </div>
   );
