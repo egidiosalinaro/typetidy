@@ -34,7 +34,7 @@ export default async function Home() {
               How TypeTidy Works
             </h2>
             <p className='text-lg text-muted-foreground'>
-              Simple, non-invasive, effective
+              Simple, non-invasive, and effective
             </p>
           </div>
 
